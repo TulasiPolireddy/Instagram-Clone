@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Prevents image hotlink blocks from CDN/Fandom -->
   <meta name="referrer" content="no-referrer" />
   <title>Instagram • Avengers HQ</title>
   <link rel="stylesheet" href="style.css" />
@@ -12,7 +11,6 @@
 </head>
 <body class="light-theme">
 
-  <!-- Main App Wrapper -->
   <div class="app-container">
 
     <!-- 1. SIDEBAR NAVIGATION -->
@@ -31,8 +29,9 @@
         <a href="#" class="nav-item" data-view="messages-view">
           <i class="fa-regular fa-paper-plane"></i> <span>Messages</span>
         </a>
-        <a href="#" class="nav-item" data-view="notifications-view">
+        <a href="#" class="nav-item" data-view="notifications-view" id="nav-notifications-btn">
           <i class="fa-regular fa-heart"></i> <span>Notifications</span>
+          <span class="notification-badge" id="nav-request-count">2</span>
         </a>
         <a href="#" class="nav-item" id="open-create-btn">
           <i class="fa-regular fa-square-plus"></i> <span>Create</span>
@@ -43,7 +42,6 @@
         </a>
       </nav>
 
-      <!-- Dark Mode Switch -->
       <div class="theme-switch-wrapper">
         <button id="theme-toggle-btn" class="theme-toggle-btn">
           <i class="fa-solid fa-moon"></i> <span>Dark Mode</span>
@@ -58,20 +56,29 @@
       <section id="feed-view" class="view-section active">
         <div class="feed-layout">
           
-          <!-- Left Column (Stories + Feed) -->
+          <!-- Main Column -->
           <div class="feed-main">
-            <!-- STORIES SECTION -->
+            
+            <!-- Stories -->
             <div class="stories-container" id="stories-container">
-              <!-- "Add Your Story" + Friends Stories dynamically rendered via JS -->
+              <!-- Rendered via JS -->
             </div>
 
-            <!-- FEED POSTS -->
+            <!-- Feed Header with Refresh -->
+            <div class="feed-top-bar">
+              <span>Feed Intel</span>
+              <button class="refresh-feed-btn" id="refresh-feed-btn" title="Refresh Feed">
+                <i class="fa-solid fa-arrows-rotate"></i> Refresh Feed
+              </button>
+            </div>
+
+            <!-- Feed Posts -->
             <div class="posts-feed" id="posts-feed">
               <!-- Rendered Dynamically via JS -->
             </div>
           </div>
 
-          <!-- Right Column (Avengers Suggestions) -->
+          <!-- Right Sidebar (Followers Suggested) -->
           <div class="feed-sidebar">
             <div class="current-user-badge">
               <img src="" alt="Tulasi Polireddy" class="user-avatar-sync" />
@@ -81,8 +88,8 @@
               </div>
             </div>
             <div class="suggestions-header">
-              <span>Avengers Suggested</span>
-              <button class="see-all-btn">Refresh</button>
+              <span>Followers Suggested</span>
+              <button class="see-all-btn" id="sidebar-refresh-btn"><i class="fa-solid fa-rotate"></i></button>
             </div>
             <div class="suggestions-list" id="suggestions-list">
               <!-- Dynamically populated in app.js -->
@@ -101,7 +108,7 @@
             <input type="text" id="search-input" placeholder="Search Marvel heroes (e.g. tony_stark, wanda)..." />
           </div>
           <div class="search-results" id="search-results">
-            <!-- Search Results Displayed Here -->
+            <!-- Search Results -->
           </div>
         </div>
       </section>
@@ -109,25 +116,19 @@
       <!-- ================= MESSAGES VIEW ================= -->
       <section id="messages-view" class="view-section">
         <div class="chat-container">
-          <!-- Chat Contacts Sidebar -->
           <div class="chat-sidebar">
             <div class="chat-sidebar-header">
               <h3 class="user-username-sync">tulasi_polireddy</h3>
               <i class="fa-regular fa-pen-to-square"></i>
             </div>
             <div class="chat-user-list" id="chat-user-list">
-              <!-- Marvel Chat users rendered via JS -->
+              <!-- Chat Users rendered via JS -->
             </div>
           </div>
 
-          <!-- Chat Conversation Window -->
           <div class="chat-window" id="chat-window">
-            <div class="chat-window-header" id="chat-header">
-              <!-- Active Chat Info -->
-            </div>
-            <div class="chat-messages" id="chat-messages">
-              <!-- Dynamic Messages Rendered Here -->
-            </div>
+            <div class="chat-window-header" id="chat-header"></div>
+            <div class="chat-messages" id="chat-messages"></div>
             <form class="chat-input-area" id="chat-form">
               <input type="text" id="chat-input" placeholder="Message Avengers comms..." autocomplete="off" />
               <button type="submit">Send</button>
@@ -140,8 +141,19 @@
       <section id="notifications-view" class="view-section">
         <div class="notifications-page">
           <h2>Avengers HQ Alerts</h2>
+          
+          <!-- Follow Requests Section -->
+          <div class="requests-section" id="requests-section">
+            <h3>Follow Requests (<span id="request-count-header">0</span>)</h3>
+            <div class="requests-list" id="requests-list">
+              <!-- Dynamic Follow Requests with Confirm / Delete -->
+            </div>
+          </div>
+
+          <!-- General Notifications -->
+          <h3 style="margin-top: 20px; font-size: 15px;">Recent Activity</h3>
           <div class="notifications-list" id="notifications-list">
-            <!-- Dynamic Notifications -->
+            <!-- Notifications list -->
           </div>
         </div>
       </section>
@@ -150,7 +162,6 @@
       <section id="profile-view" class="view-section">
         <div class="profile-container">
           
-          <!-- Profile Header -->
           <header class="profile-header">
             <div class="profile-avatar-container">
               <img src="" alt="Profile avatar" class="profile-avatar user-avatar-sync" />
@@ -164,8 +175,8 @@
               </div>
               <ul class="profile-stats">
                 <li><strong id="profile-posts-count">0</strong> posts</li>
-                <li><strong id="profile-followers-count">0</strong> followers</li>
-                <li><strong id="profile-following-count">0</strong> following</li>
+                <li class="clickable-stat" id="stat-followers-btn"><strong id="profile-followers-count">0</strong> followers</li>
+                <li class="clickable-stat" id="stat-following-btn"><strong id="profile-following-count">0</strong> following</li>
               </ul>
               <div class="profile-bio">
                 <p class="bio-name user-name-sync">Tulasi Polireddy</p>
@@ -175,7 +186,6 @@
             </div>
           </header>
 
-          <!-- Profile Tabs (Posts vs Saved) -->
           <div class="profile-tabs">
             <button class="tab-btn active" id="tab-posts-btn" onclick="switchProfileTab('posts')">
               <i class="fa-solid fa-table-cells"></i> POSTS
@@ -185,10 +195,7 @@
             </button>
           </div>
 
-          <!-- Profile Posts Grid -->
-          <div class="profile-grid" id="profile-grid">
-            <!-- Grid posts rendered via JS -->
-          </div>
+          <div class="profile-grid" id="profile-grid"></div>
 
         </div>
       </section>
@@ -202,14 +209,14 @@
   <div class="modal" id="create-modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>Create New Avengers Intel</h3>
+        <h3>Create New Avengers Post</h3>
         <button class="close-modal" id="close-create-btn">&times;</button>
       </div>
       <form id="create-post-form" class="modal-body">
         <div class="image-upload-area">
           <input type="file" id="post-image-file" accept="image/*" />
           <p>Or paste image URL:</p>
-          <input type="url" id="post-image-url" placeholder="https://example.com/marvel-image.jpg" />
+          <input type="url" id="post-image-url" placeholder="https://images.unsplash.com/photo-..." />
           <div id="image-preview" class="image-preview"></div>
         </div>
         <textarea id="post-caption-input" placeholder="Write a mission briefing / caption..." required></textarea>
@@ -218,7 +225,37 @@
     </div>
   </div>
 
-  <!-- 2. ADD STORY MODAL -->
+  <!-- 2. EDIT POST MODAL -->
+  <div class="modal" id="edit-post-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Edit Post</h3>
+        <button class="close-modal" id="close-edit-post-btn">&times;</button>
+      </div>
+      <form id="edit-post-form" class="modal-body">
+        <label>Edit Caption</label>
+        <textarea id="edit-post-caption" class="form-control" required></textarea>
+        <button type="submit" class="btn-primary full-width">Update Post</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. FOLLOWERS / FOLLOWING LIST MODAL -->
+  <div class="modal" id="users-list-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="users-modal-title">Followers</h3>
+        <button class="close-modal" id="close-users-modal-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="users-modal-list" id="users-modal-list">
+          <!-- Dynamic Followers/Following list with Remove/Unfollow buttons -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. ADD STORY MODAL -->
   <div class="modal" id="add-story-modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -229,7 +266,7 @@
         <div class="image-upload-area">
           <input type="file" id="story-image-file" accept="image/*" />
           <p>Or paste image URL:</p>
-          <input type="url" id="story-image-url" placeholder="https://example.com/story-image.jpg" />
+          <input type="url" id="story-image-url" placeholder="https://images.unsplash.com/..." />
           <div id="story-preview" class="image-preview"></div>
         </div>
         <button type="submit" class="btn-primary full-width">Publish Story</button>
@@ -237,7 +274,7 @@
     </div>
   </div>
 
-  <!-- 3. EDIT PROFILE MODAL -->
+  <!-- 5. EDIT PROFILE MODAL -->
   <div class="modal" id="edit-profile-modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -268,7 +305,7 @@
     </div>
   </div>
 
-  <!-- 4. STORY VIEWER MODAL -->
+  <!-- 6. STORY VIEWER MODAL -->
   <div class="story-viewer-modal" id="story-viewer-modal">
     <div class="story-viewer-content">
       <div class="story-progress-bar-container">
