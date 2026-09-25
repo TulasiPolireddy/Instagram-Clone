@@ -66,35 +66,41 @@ const state = {
   activeProfileTab: "posts",
   editingPostId: null,
 
-  // Incoming follow requests
+  // Incoming follow requests to accept/decline
   pendingFollowRequests: [
     { id: "req_1", user: MARVEL_USERS.tony },
     { id: "req_2", user: MARVEL_USERS.wanda }
   ],
 
-  // Stories
+  // Custom Marvel Stories
   stories: [
     { 
       id: 101, 
       username: MARVEL_USERS.tony.username, 
       avatar: MARVEL_USERS.tony.avatar, 
-      storyImg: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" 
+      storyImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbstTe2HgW2u1lv5CrnWYxRtKRMieebZq1CtAYvPw5tlYiuUOmNfRHWAuV&s=10" // Tony Stark Story
     },
     { 
       id: 102, 
       username: MARVEL_USERS.peter.username, 
       avatar: MARVEL_USERS.peter.avatar, 
-      storyImg: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80" 
+      storyImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCpT0-EQVdT8RtpTIMEIftkmvuJGMtk3gG2GnHBV0HB2FK-H9ZiRnqYV0&s=10" // Peter Parker Story 1
     },
     { 
       id: 103, 
+      username: MARVEL_USERS.peter.username, 
+      avatar: MARVEL_USERS.peter.avatar, 
+      storyImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTscGfSvHiCqqtMcIOqXT2roTN4hd7ogJSR2e7xqymZF_R_Tw2ELYTD2GL7&s=10" // Peter Parker Story 2
+    },
+    { 
+      id: 104, 
       username: MARVEL_USERS.strange.username, 
       avatar: MARVEL_USERS.strange.avatar, 
       storyImg: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80" 
     }
   ],
 
-  // Posts Feed (Fixed with HD Marvel Imagery)
+  // Custom Marvel Posts Feed
   posts: [
     {
       id: 1,
@@ -115,7 +121,7 @@ const state = {
       id: 2,
       username: "tony_stark",
       avatar: MARVEL_USERS.tony.avatar,
-      image: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=800&q=80",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF3pIbXvecBQVcUuN_wI-Ms3tl86uV8FEShmmsDUJIBE3sQnlJPGmI7IjO&s=10", // Tony Stark Custom Post
       caption: "New nanotech calibrations complete on Mark 85 armor. JARVIS says we're golden. 🦾✨",
       likes: 5890,
       isLiked: false,
@@ -129,8 +135,8 @@ const state = {
       id: 3,
       username: "peter_parker",
       avatar: MARVEL_USERS.peter.avatar,
-      image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80",
-      caption: "Queens sunset patrol view! Best city in the universe 🕷️🕸️🗽",
+      image: "https://i.pinimg.com/736x/4a/b9/e4/4ab9e447e7b4d4d0df36c311dcf80c2e.jpg", // Peter Parker Custom Post
+      caption: "Queens patrol complete! Staying vigilant for the neighborhood. 🕷️🕸️",
       likes: 3120,
       isLiked: false,
       isSaved: false,
@@ -213,7 +219,7 @@ themeToggleBtn.addEventListener("click", () => {
     : `<i class="fa-solid fa-moon"></i> <span>Dark Mode</span>`;
 });
 
-/* ================= 6. STORIES (VIEW & CREATE) ================= */
+/* ================= 6. STORIES ================= */
 let activeStoryIndex = 0;
 let storyTimer = null;
 
@@ -434,7 +440,6 @@ function renderFeed() {
     .join("");
 }
 
-// Toggle options dropdown on posts
 function togglePostMenu(postId) {
   document.querySelectorAll(".post-options-dropdown").forEach((el) => {
     if (el.id !== `dropdown-${postId}`) el.classList.remove("show");
@@ -473,7 +478,6 @@ editPostForm.addEventListener("submit", (e) => {
   }
 });
 
-// Delete Post
 function deletePost(postId) {
   if (confirm("Are you sure you want to delete this post?")) {
     state.posts = state.posts.filter((p) => p.id !== postId);
@@ -482,7 +486,7 @@ function deletePost(postId) {
   }
 }
 
-// Refresh Feed Feature
+// Refresh Feed
 function refreshFeed() {
   const refreshBtn = document.getElementById("refresh-feed-btn");
   refreshBtn.innerHTML = `<i class="fa-solid fa-arrows-rotate fa-spin"></i> Refreshing...`;
@@ -550,27 +554,59 @@ function deleteComment(postId, commentId) {
   }
 }
 
-/* ================= 8. FOLLOWERS SUGGESTED & FOLLOW SYSTEM ================= */
+/* ================= 8. AUTOMATED FOLLOW / REQUEST ACCEPTANCE ================= */
 function handleFollowAction(username) {
   const userKey = Object.keys(MARVEL_USERS).find((k) => MARVEL_USERS[k].username === username);
   if (!userKey) return;
   const targetUser = MARVEL_USERS[userKey];
 
   if (targetUser.status === "none") {
+    // 1. Instantly set to "Requested"
     targetUser.status = "requested";
+    renderSuggestions();
+    renderSearch(document.getElementById("search-input").value);
+
+    // 2. Automated simulated acceptance after 1.2 seconds
+    setTimeout(() => {
+      if (targetUser.status === "requested") {
+        targetUser.status = "following";
+        
+        // Add to user following list if not already present
+        if (!state.currentUser.followingList.some((u) => u.username === targetUser.username)) {
+          state.currentUser.followingList.push(targetUser);
+        }
+
+        // Add acceptance notification
+        state.notifications.unshift({
+          id: Date.now(),
+          username: targetUser.username,
+          avatar: targetUser.avatar,
+          text: "accepted your follow request.",
+          time: "Just now"
+        });
+
+        syncCurrentUserUI();
+        renderSuggestions();
+        renderSearch(document.getElementById("search-input").value);
+        renderNotifications();
+      }
+    }, 1200);
+
   } else if (targetUser.status === "requested") {
-    // If clicked again, directly complete following
-    targetUser.status = "following";
-    state.currentUser.followingList.push(targetUser);
+    // Cancel request
+    targetUser.status = "none";
+    syncCurrentUserUI();
+    renderSuggestions();
+    renderSearch(document.getElementById("search-input").value);
+
   } else if (targetUser.status === "following") {
     // Unfollow
     targetUser.status = "none";
     state.currentUser.followingList = state.currentUser.followingList.filter((u) => u.username !== targetUser.username);
+    syncCurrentUserUI();
+    renderSuggestions();
+    renderSearch(document.getElementById("search-input").value);
   }
-
-  syncCurrentUserUI();
-  renderSuggestions();
-  renderSearch(document.getElementById("search-input").value);
 }
 
 function renderSuggestions() {
@@ -636,7 +672,7 @@ function renderNotifications() {
       .join("");
   }
 
-  // Regular Notifications
+  // Regular Notifications List
   const container = document.getElementById("notifications-list");
   container.innerHTML = state.notifications
     .map(
@@ -677,7 +713,7 @@ function declineFollowRequest(requestId) {
   syncCurrentUserUI();
 }
 
-/* ================= 10. FOLLOWERS & FOLLOWING MODAL ================= */
+/* ================= 10. FOLLOWERS & FOLLOWING MODALS ================= */
 const usersModal = document.getElementById("users-list-modal");
 const usersModalTitle = document.getElementById("users-modal-title");
 const usersModalList = document.getElementById("users-modal-list");
@@ -932,7 +968,7 @@ createPostForm.addEventListener("submit", (e) => {
   createModal.classList.remove("active");
 });
 
-/* ================= 14. MESSAGES / DIRECT COMMS ================= */
+/* ================= 14. MESSAGES ================= */
 function renderChatSidebar() {
   const list = document.getElementById("chat-user-list");
   list.innerHTML = Object.keys(state.messages)
