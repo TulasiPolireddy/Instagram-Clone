@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Prevents Wikia/Fandom from blocking the shield image hotlink -->
+  <!-- Prevents image hotlink blocks from CDN/Fandom -->
   <meta name="referrer" content="no-referrer" />
   <title>Instagram • Avengers HQ</title>
   <link rel="stylesheet" href="style.css" />
@@ -38,7 +38,7 @@
           <i class="fa-regular fa-square-plus"></i> <span>Create</span>
         </a>
         <a href="#" class="nav-item" data-view="profile-view">
-          <img src="https://static.wikia.nocookie.net/marvelcinematicuniverse/images/3/36/Captain_America_Shield.png/revision/latest/scale-to-width-down/1200?cb=20190316204818" alt="Profile" class="nav-profile-img" />
+          <img src="" alt="Profile" class="nav-profile-img user-avatar-sync" />
           <span>Profile</span>
         </a>
       </nav>
@@ -58,11 +58,11 @@
       <section id="feed-view" class="view-section active">
         <div class="feed-layout">
           
-          <!-- Left Column (Stories + Posts) -->
+          <!-- Left Column (Stories + Feed) -->
           <div class="feed-main">
-            <!-- STORIES -->
+            <!-- STORIES SECTION -->
             <div class="stories-container" id="stories-container">
-              <!-- Rendered Dynamically via JS -->
+              <!-- "Add Your Story" + Friends Stories dynamically rendered via JS -->
             </div>
 
             <!-- FEED POSTS -->
@@ -74,15 +74,15 @@
           <!-- Right Column (Avengers Suggestions) -->
           <div class="feed-sidebar">
             <div class="current-user-badge">
-              <img src="https://static.wikia.nocookie.net/marvelcinematicuniverse/images/3/36/Captain_America_Shield.png/revision/latest/scale-to-width-down/1200?cb=20190316204818" alt="Tulasi Polireddy" />
+              <img src="" alt="Tulasi Polireddy" class="user-avatar-sync" />
               <div>
-                <strong>tulasi_polireddy</strong>
-                <p>Tulasi Polireddy 🛡️</p>
+                <strong class="user-username-sync">tulasi_polireddy</strong>
+                <p class="user-name-sync">Tulasi Polireddy 🛡️</p>
               </div>
             </div>
             <div class="suggestions-header">
               <span>Avengers Suggested</span>
-              <button class="see-all-btn">See All</button>
+              <button class="see-all-btn">Refresh</button>
             </div>
             <div class="suggestions-list" id="suggestions-list">
               <!-- Dynamically populated in app.js -->
@@ -98,7 +98,7 @@
           <h2>Search Heroes & Allies</h2>
           <div class="search-input-box">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="search-input" placeholder="Search Marvel heroes (e.g. tony_stark, peter_parker)..." />
+            <input type="text" id="search-input" placeholder="Search Marvel heroes (e.g. tony_stark, wanda)..." />
           </div>
           <div class="search-results" id="search-results">
             <!-- Search Results Displayed Here -->
@@ -112,7 +112,7 @@
           <!-- Chat Contacts Sidebar -->
           <div class="chat-sidebar">
             <div class="chat-sidebar-header">
-              <h3>tulasi_polireddy</h3>
+              <h3 class="user-username-sync">tulasi_polireddy</h3>
               <i class="fa-regular fa-pen-to-square"></i>
             </div>
             <div class="chat-user-list" id="chat-user-list">
@@ -129,7 +129,7 @@
               <!-- Dynamic Messages Rendered Here -->
             </div>
             <form class="chat-input-area" id="chat-form">
-              <input type="text" id="chat-input" placeholder="Message..." autocomplete="off" />
+              <input type="text" id="chat-input" placeholder="Message Avengers comms..." autocomplete="off" />
               <button type="submit">Send</button>
             </form>
           </div>
@@ -141,7 +141,7 @@
         <div class="notifications-page">
           <h2>Avengers HQ Alerts</h2>
           <div class="notifications-list" id="notifications-list">
-            <!-- Marvel dynamic notifications -->
+            <!-- Dynamic Notifications -->
           </div>
         </div>
       </section>
@@ -153,34 +153,41 @@
           <!-- Profile Header -->
           <header class="profile-header">
             <div class="profile-avatar-container">
-              <img src="https://static.wikia.nocookie.net/marvelcinematicuniverse/images/3/36/Captain_America_Shield.png/revision/latest/scale-to-width-down/1200?cb=20190316204818" alt="Captain America Shield" class="profile-avatar" />
+              <img src="" alt="Profile avatar" class="profile-avatar user-avatar-sync" />
             </div>
             <div class="profile-details">
               <div class="profile-details-top">
-                <h2 id="profile-username">tulasi_polireddy</h2>
-                <button id="profile-edit-btn" class="btn-primary">Edit Profile</button>
+                <h2 id="profile-username" class="user-username-sync">tulasi_polireddy</h2>
+                <button id="open-edit-profile-btn" class="btn-secondary">
+                  <i class="fa-solid fa-gear"></i> Edit Profile
+                </button>
               </div>
               <ul class="profile-stats">
-                <li><strong id="profile-posts-count">2</strong> posts</li>
-                <li><strong id="profile-followers-count">3,420</strong> followers</li>
-                <li><strong id="profile-following-count">18</strong> following</li>
+                <li><strong id="profile-posts-count">0</strong> posts</li>
+                <li><strong id="profile-followers-count">0</strong> followers</li>
+                <li><strong id="profile-following-count">0</strong> following</li>
               </ul>
               <div class="profile-bio">
-                <p class="bio-name">Tulasi Polireddy</p>
-                <p>🛡️ Captain America Vibranium Wielder</p>
-                <p>⚡ Earth's Mightiest Avenger | Tactical Tech & UI Engineer</p>
-                <p>📍 Avengers Compound, Upstate NY</p>
-                <a href="#">avengers.shield/tulasi</a>
+                <p class="bio-name user-name-sync">Tulasi Polireddy</p>
+                <p id="profile-bio-text">🛡️ Captain America Vibranium Wielder</p>
+                <a href="#" id="profile-website-link" target="_blank">avengers.shield/tulasi</a>
               </div>
             </div>
           </header>
 
-          <!-- Profile Grid -->
+          <!-- Profile Tabs (Posts vs Saved) -->
           <div class="profile-tabs">
-            <span class="active"><i class="fa-solid fa-table-cells"></i> POSTS</span>
+            <button class="tab-btn active" id="tab-posts-btn" onclick="switchProfileTab('posts')">
+              <i class="fa-solid fa-table-cells"></i> POSTS
+            </button>
+            <button class="tab-btn" id="tab-saved-btn" onclick="switchProfileTab('saved')">
+              <i class="fa-regular fa-bookmark"></i> SAVED
+            </button>
           </div>
+
+          <!-- Profile Posts Grid -->
           <div class="profile-grid" id="profile-grid">
-            <!-- User Grid Posts -->
+            <!-- Grid posts rendered via JS -->
           </div>
 
         </div>
@@ -195,14 +202,14 @@
   <div class="modal" id="create-modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>Create New Avengers Intel / Post</h3>
+        <h3>Create New Avengers Intel</h3>
         <button class="close-modal" id="close-create-btn">&times;</button>
       </div>
       <form id="create-post-form" class="modal-body">
         <div class="image-upload-area">
           <input type="file" id="post-image-file" accept="image/*" />
           <p>Or paste image URL:</p>
-          <input type="url" id="post-image-url" placeholder="https://example.com/marvel-pic.jpg" />
+          <input type="url" id="post-image-url" placeholder="https://example.com/marvel-image.jpg" />
           <div id="image-preview" class="image-preview"></div>
         </div>
         <textarea id="post-caption-input" placeholder="Write a mission briefing / caption..." required></textarea>
@@ -211,7 +218,57 @@
     </div>
   </div>
 
-  <!-- 2. STORY VIEWER MODAL -->
+  <!-- 2. ADD STORY MODAL -->
+  <div class="modal" id="add-story-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add to Your Story</h3>
+        <button class="close-modal" id="close-story-modal-btn">&times;</button>
+      </div>
+      <form id="add-story-form" class="modal-body">
+        <div class="image-upload-area">
+          <input type="file" id="story-image-file" accept="image/*" />
+          <p>Or paste image URL:</p>
+          <input type="url" id="story-image-url" placeholder="https://example.com/story-image.jpg" />
+          <div id="story-preview" class="image-preview"></div>
+        </div>
+        <button type="submit" class="btn-primary full-width">Publish Story</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. EDIT PROFILE MODAL -->
+  <div class="modal" id="edit-profile-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Edit Profile</h3>
+        <button class="close-modal" id="close-edit-profile-btn">&times;</button>
+      </div>
+      <form id="edit-profile-form" class="modal-body">
+        <label>Full Name</label>
+        <input type="text" id="edit-name-input" class="form-control" required />
+        
+        <label>Username</label>
+        <input type="text" id="edit-username-input" class="form-control" required />
+        
+        <label>Bio</label>
+        <textarea id="edit-bio-input" class="form-control"></textarea>
+        
+        <label>Website Link</label>
+        <input type="text" id="edit-website-input" class="form-control" />
+        
+        <label>Profile Picture URL</label>
+        <input type="url" id="edit-avatar-url" class="form-control" placeholder="Paste image URL..." />
+        
+        <label>Or Upload New Avatar</label>
+        <input type="file" id="edit-avatar-file" accept="image/*" />
+
+        <button type="submit" class="btn-primary full-width">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. STORY VIEWER MODAL -->
   <div class="story-viewer-modal" id="story-viewer-modal">
     <div class="story-viewer-content">
       <div class="story-progress-bar-container">
