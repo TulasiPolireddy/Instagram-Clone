@@ -6,24 +6,24 @@
   --border-color: #dbdbdb;
   --text-primary: #262626;
   --text-secondary: #8e8e8e;
-  --accent-color: #0095f6;
-  --accent-hover: #1877f2;
-  --like-color: #ed4956;
+  --accent-color: #e62429; /* Marvel Signature Red */
+  --accent-hover: #b81d22;
+  --like-color: #e62429;
   --sidebar-width: 240px;
 }
 
 body.dark-theme {
-  --bg-primary: #000000;
-  --bg-secondary: #121212;
-  --bg-tertiary: #262626;
-  --border-color: #363636;
+  --bg-primary: #0f1015;
+  --bg-secondary: #16181f;
+  --bg-tertiary: #20232d;
+  --border-color: #2f3442;
   --text-primary: #f5f5f5;
   --text-secondary: #a8a8a8;
-  --accent-color: #0095f6;
-  --accent-hover: #3897f0;
+  --accent-color: #e62429;
+  --accent-hover: #ff383e;
 }
 
-/* ================= GLOBAL RESET ================= */
+/* ================= RESET ================= */
 * {
   margin: 0;
   padding: 0;
@@ -74,10 +74,21 @@ button {
 }
 
 .logo h2 {
-  font-size: 24px;
-  margin-bottom: 30px;
-  font-family: 'Grand Hotel', cursive, sans-serif;
-  letter-spacing: 1px;
+  font-size: 22px;
+  margin-bottom: 25px;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.avengers-badge {
+  background: var(--accent-color);
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 800;
 }
 
 .nav-links {
@@ -112,6 +123,7 @@ button {
   height: 24px;
   border-radius: 50%;
   object-fit: cover;
+  background-color: #000;
 }
 
 .theme-switch-wrapper button {
@@ -167,7 +179,7 @@ button {
   padding: 16px;
   background-color: var(--bg-primary);
   border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-radius: 12px;
   overflow-x: auto;
   margin-bottom: 24px;
   scrollbar-width: none;
@@ -183,11 +195,11 @@ button {
 }
 
 .story-avatar-wrapper {
-  width: 62px;
-  height: 62px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   padding: 2px;
-  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  background: linear-gradient(45deg, #e62429, #f78f3f, #00d2d3, #5f27cd);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -199,6 +211,7 @@ button {
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--bg-primary);
+  background-color: #000;
 }
 
 .story-item span {
@@ -214,8 +227,9 @@ button {
 .post-card {
   background-color: var(--bg-primary);
   border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-radius: 12px;
   margin-bottom: 20px;
+  overflow: hidden;
 }
 
 .post-header {
@@ -232,10 +246,11 @@ button {
 }
 
 .post-avatar {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   object-fit: cover;
+  background-color: #000;
 }
 
 .post-image-container img {
@@ -248,7 +263,7 @@ button {
 .post-actions {
   display: flex;
   justify-content: space-between;
-  padding: 10px 14px 6px;
+  padding: 12px 14px 6px;
   font-size: 20px;
 }
 
@@ -259,10 +274,20 @@ button {
 
 .post-actions button {
   color: var(--text-primary);
+  transition: transform 0.1s ease;
+}
+
+.post-actions button:active {
+  transform: scale(1.2);
 }
 
 .post-actions .liked i {
   color: var(--like-color);
+  font-weight: 900;
+}
+
+.post-actions .saved i {
+  color: var(--text-primary);
   font-weight: 900;
 }
 
@@ -278,22 +303,17 @@ button {
 
 .post-caption {
   margin-bottom: 8px;
+  line-height: 1.4;
 }
 
 .post-caption strong {
   margin-right: 6px;
 }
 
-.post-comments-view {
-  color: var(--text-secondary);
-  cursor: pointer;
-  margin-bottom: 6px;
-}
-
 .post-comments-list {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
   margin-bottom: 8px;
 }
 
@@ -355,10 +375,12 @@ button {
 }
 
 .current-user-badge img {
-  width: 48px;
-  height: 48px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   object-fit: cover;
+  background-color: #000;
+  border: 1px solid var(--border-color);
 }
 
 .current-user-badge p {
@@ -388,10 +410,11 @@ button {
 }
 
 .suggestion-user-info img {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   object-fit: cover;
+  background-color: #000;
 }
 
 .follow-toggle-btn {
@@ -402,7 +425,7 @@ button {
 
 /* ================= 2. SEARCH VIEW ================= */
 .search-page {
-  max-width: 500px;
+  max-width: 520px;
   margin: 0 auto;
 }
 
@@ -412,7 +435,7 @@ button {
   gap: 10px;
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
-  padding: 10px 14px;
+  padding: 12px 16px;
   border-radius: 8px;
   margin: 16px 0;
 }
@@ -445,10 +468,12 @@ button {
 }
 
 .profile-avatar-container img {
-  width: 130px;
-  height: 130px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
   object-fit: cover;
+  background-color: #000;
+  border: 2px solid var(--border-color);
 }
 
 .profile-details-top {
@@ -467,7 +492,7 @@ button {
 
 .profile-bio {
   font-size: 14px;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .profile-tabs {
@@ -482,7 +507,7 @@ button {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 1px;
-  border-top: 1px solid var(--text-primary);
+  border-top: 2px solid var(--text-primary);
   cursor: pointer;
 }
 
@@ -495,8 +520,9 @@ button {
 .profile-grid-item {
   position: relative;
   aspect-ratio: 1 / 1;
-  background: #eee;
+  background: #111;
   overflow: hidden;
+  border-radius: 6px;
   cursor: pointer;
 }
 
@@ -512,12 +538,12 @@ button {
   height: 80vh;
   border: 1px solid var(--border-color);
   background-color: var(--bg-primary);
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
 }
 
 .chat-sidebar {
-  width: 300px;
+  width: 320px;
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
@@ -541,6 +567,7 @@ button {
   gap: 12px;
   padding: 12px 16px;
   cursor: pointer;
+  transition: background 0.15s;
 }
 
 .chat-user-item:hover, .chat-user-item.active {
@@ -552,6 +579,7 @@ button {
   height: 44px;
   border-radius: 50%;
   object-fit: cover;
+  background: #000;
 }
 
 .chat-window {
@@ -576,10 +604,11 @@ button {
 }
 
 .chat-bubble {
-  max-width: 60%;
+  max-width: 65%;
   padding: 10px 14px;
   border-radius: 18px;
   font-size: 14px;
+  line-height: 1.4;
 }
 
 .chat-bubble.sent {
@@ -615,7 +644,7 @@ button {
 
 /* ================= 5. NOTIFICATIONS ================= */
 .notifications-page {
-  max-width: 500px;
+  max-width: 520px;
   margin: 0 auto;
 }
 
@@ -630,10 +659,10 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 12px;
+  padding: 12px 14px;
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
 .notification-user {
@@ -644,23 +673,25 @@ button {
 }
 
 .notification-user img {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
+  object-fit: cover;
+  background-color: #000;
 }
 
 /* ================= 6. BUTTONS & UTILS ================= */
 .btn-primary {
   background-color: var(--accent-color);
   color: white;
-  padding: 7px 16px;
+  padding: 7px 18px;
   border-radius: 6px;
   font-weight: 600;
+  transition: opacity 0.2s;
 }
 
-.btn-primary.following {
-  background-color: var(--bg-tertiary);
-  color: var(--text-primary);
+.btn-primary:hover {
+  opacity: 0.9;
 }
 
 .full-width {
@@ -671,7 +702,7 @@ button {
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.7);
   display: none;
   align-items: center;
   justify-content: center;
@@ -694,7 +725,7 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
+  padding: 14px 16px;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -714,11 +745,6 @@ button {
   padding: 8px;
   border-radius: 6px;
   outline: none;
-}
-
-.image-upload-area input {
-  width: 100%;
-  margin-top: 6px;
 }
 
 .image-preview img {
@@ -774,9 +800,9 @@ button {
 
 .story-author-info {
   position: absolute;
-  top: 12px;
-  left: 12px;
-  right: 12px;
+  top: 14px;
+  left: 14px;
+  right: 14px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -785,9 +811,11 @@ button {
 }
 
 .story-author-info img {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
+  object-fit: cover;
+  background: #000;
 }
 
 .close-story {
