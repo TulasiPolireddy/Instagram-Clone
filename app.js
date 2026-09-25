@@ -1,4 +1,4 @@
-/* ================= 1. MARVEL USERS DATABASE ================= */
+/* ================= 1. MARVEL CHARACTERS DATABASE ================= */
 const MARVEL_USERS = {
   tulasi: {
     username: "tulasi_polireddy",
@@ -6,65 +6,72 @@ const MARVEL_USERS = {
     avatar: "https://static.wikia.nocookie.net/marvelcinematicuniverse/images/3/36/Captain_America_Shield.png/revision/latest/scale-to-width-down/1200?cb=20190316204818",
     bio: "🛡️ Captain America Vibranium Wielder\n⚡ Earth's Mightiest Avenger | Tactical Tech & UI Engineer\n📍 Avengers Compound, Upstate NY",
     website: "https://avengers.shield/tulasi",
-    followers: 3420,
-    following: 18
+    followersList: [], // Initialized at 0
+    followingList: []  // Initialized at 0
   },
   tony: {
     username: "tony_stark",
     name: "Tony Stark 🦾",
-    avatar: "https://static.wikia.nocookie.net/marvelcinematicuniverse/images/3/35/IronMan-EndgameProfile.jpg/revision/latest?cb=20231025175916",
-    isFollowing: true,
+    avatar: "https://images.unsplash.com/photo-1635863138275-d9b33299680b?auto=format&fit=crop&w=400&q=80",
+    status: "none", // 'none' | 'requested' | 'following'
     followers: 8900000
   },
   peter: {
     username: "peter_parker",
     name: "Peter Parker 🕷️",
-    avatar: "https://static.wikia.nocookie.net/marvelcinematicuniverse/images/8/87/Spider-Man_FFH_Profile.jpg/revision/latest?cb=20231025183307",
-    isFollowing: true,
+    avatar: "https://images.unsplash.com/photo-1604200213928-ba3cf4fc8436?auto=format&fit=crop&w=400&q=80",
+    status: "none",
     followers: 4200000
   },
   thor: {
     username: "thor_odinson",
     name: "Thor Odinson ⚡",
-    avatar: "https://static.wikia.nocookie.net/marvelcinematicuniverse/images/1/13/Thor_Love_and_Thunder_profile.jpg/revision/latest?cb=20231025183424",
-    isFollowing: false,
+    avatar: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=400&q=80",
+    status: "none",
     followers: 6500000
   },
   strange: {
     username: "dr_strange",
     name: "Stephen Strange 👁️",
-    avatar: "https://static.wikia.nocookie.net/marvelcinematicuniverse/images/d/dd/Doctor_Strange_profile.jpg/revision/latest?cb=20230713024825",
-    isFollowing: false,
+    avatar: "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=400&q=80",
+    status: "none",
     followers: 2100000
   },
   wanda: {
     username: "wanda_maximoff",
     name: "Wanda Maximoff 🔮",
-    avatar: "https://static.wikia.nocookie.net/marvelcinematicuniverse/images/0/0c/Scarlet_Witch_profile.jpg/revision/latest?cb=20230713024419",
-    isFollowing: false,
+    avatar: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=400&q=80",
+    status: "none",
     followers: 5300000
   },
   natasha: {
     username: "natasha_romanoff",
     name: "Natasha Romanoff 🕷️",
-    avatar: "https://static.wikia.nocookie.net/marvelcinematicuniverse/images/9/9a/Black_Widow_D23_Banner.jpg/revision/latest?cb=20190825171731",
-    isFollowing: false,
+    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+    status: "none",
     followers: 3900000
   },
   bruce: {
     username: "bruce_banner",
     name: "Bruce Banner 🧪",
-    avatar: "https://static.wikia.nocookie.net/marvelcinematicuniverse/images/1/17/BruceBanner-EndgameProfile.jpg/revision/latest?cb=20231025180047",
-    isFollowing: false,
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+    status: "none",
     followers: 1800000
   }
 };
 
-/* ================= 2. GLOBAL APPLICATION STATE ================= */
+/* ================= 2. GLOBAL STATE ================= */
 const state = {
   currentUser: { ...MARVEL_USERS.tulasi },
   activeProfileTab: "posts",
-  
+  editingPostId: null,
+
+  // Incoming follow requests
+  pendingFollowRequests: [
+    { id: "req_1", user: MARVEL_USERS.tony },
+    { id: "req_2", user: MARVEL_USERS.wanda }
+  ],
+
   // Stories
   stories: [
     { 
@@ -77,23 +84,17 @@ const state = {
       id: 102, 
       username: MARVEL_USERS.peter.username, 
       avatar: MARVEL_USERS.peter.avatar, 
-      storyImg: "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=800&q=80" 
+      storyImg: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80" 
     },
     { 
       id: 103, 
       username: MARVEL_USERS.strange.username, 
       avatar: MARVEL_USERS.strange.avatar, 
-      storyImg: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80" 
-    },
-    { 
-      id: 104, 
-      username: MARVEL_USERS.wanda.username, 
-      avatar: MARVEL_USERS.wanda.avatar, 
-      storyImg: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80" 
+      storyImg: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80" 
     }
   ],
 
-  // Posts Feed with Liked Comments
+  // Posts Feed (Fixed with HD Marvel Imagery)
   posts: [
     {
       id: 1,
@@ -107,15 +108,14 @@ const state = {
       timestamp: "1 HOUR AGO",
       comments: [
         { id: 101, username: "tony_stark", text: "Don't scratch my paint job when you throw that thing.", likes: 14, isLiked: false },
-        { id: 102, username: "peter_parker", text: "That shield does not obey the laws of physics at all! 🔥", likes: 28, isLiked: false },
-        { id: 103, username: "thor_odinson", text: "A FINE WEAPON FOR A NOBLE WARRIOR!", likes: 9, isLiked: false }
+        { id: 102, username: "peter_parker", text: "That shield does not obey the laws of physics at all! 🔥", likes: 28, isLiked: false }
       ]
     },
     {
       id: 2,
       username: "tony_stark",
       avatar: MARVEL_USERS.tony.avatar,
-      image: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80",
+      image: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=800&q=80",
       caption: "New nanotech calibrations complete on Mark 85 armor. JARVIS says we're golden. 🦾✨",
       likes: 5890,
       isLiked: false,
@@ -129,7 +129,7 @@ const state = {
       id: 3,
       username: "peter_parker",
       avatar: MARVEL_USERS.peter.avatar,
-      image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80",
+      image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80",
       caption: "Queens sunset patrol view! Best city in the universe 🕷️🕸️🗽",
       likes: 3120,
       isLiked: false,
@@ -144,30 +144,23 @@ const state = {
   // Notifications
   notifications: [
     { id: 1, username: "tony_stark", avatar: MARVEL_USERS.tony.avatar, text: "liked your vibranium shield post.", time: "5m ago" },
-    { id: 2, username: "thor_odinson", avatar: MARVEL_USERS.thor.avatar, text: "commented: 'A FINE WEAPON FOR A NOBLE WARRIOR!'", time: "42m ago" },
-    { id: 3, username: "wanda_maximoff", avatar: MARVEL_USERS.wanda.avatar, text: "started following you.", time: "2h ago" }
+    { id: 2, username: "thor_odinson", avatar: MARVEL_USERS.thor.avatar, text: "commented on your intel.", time: "42m ago" }
   ],
 
   // Messages
   messages: {
     "tony_stark": [
       { sender: "tony_stark", text: "Tulasi, did you check the latest telemetry on the shield's kinetic return?" },
-      { sender: "tulasi_polireddy", text: "Yes Tony, deflection rebound accuracy is up 25%. Perfect for the field." }
-    ],
-    "dr_strange": [
-      { sender: "dr_strange", text: "The Mirror Dimension is secure for tomorrow's defensive practice." }
-    ],
-    "wanda_maximoff": [
-      { sender: "wanda_maximoff", text: "Thank you for the support on the mission briefing, Tulasi." }
+      { sender: "tulasi_polireddy", text: "Yes Tony, deflection rebound accuracy is up 25%." }
     ],
     "peter_parker": [
-      { sender: "peter_parker", text: "Mr. Polireddy! Are we doing training session with Cap's shield today?" }
+      { sender: "peter_parker", text: "Mr. Polireddy! Are we doing training session today?" }
     ]
   },
   activeChatUser: "tony_stark"
 };
 
-/* ================= 3. SYNC USER PROFILE IN DOM ================= */
+/* ================= 3. UI SYNC & INITIALIZATION ================= */
 function syncCurrentUserUI() {
   document.querySelectorAll(".user-avatar-sync").forEach((img) => (img.src = state.currentUser.avatar));
   document.querySelectorAll(".user-username-sync").forEach((el) => (el.textContent = state.currentUser.username));
@@ -177,8 +170,21 @@ function syncCurrentUserUI() {
   const linkEl = document.getElementById("profile-website-link");
   linkEl.textContent = state.currentUser.website.replace(/^https?:\/\//, "");
   linkEl.href = state.currentUser.website;
-  document.getElementById("profile-followers-count").textContent = state.currentUser.followers.toLocaleString();
-  document.getElementById("profile-following-count").textContent = state.currentUser.following;
+  
+  // Set accurate Followers & Following counts
+  document.getElementById("profile-followers-count").textContent = state.currentUser.followersList.length;
+  document.getElementById("profile-following-count").textContent = state.currentUser.followingList.length;
+
+  // Update follow requests badge
+  const reqCount = state.pendingFollowRequests.length;
+  const badge = document.getElementById("nav-request-count");
+  if (reqCount > 0) {
+    badge.textContent = reqCount;
+    badge.style.display = "inline-block";
+  } else {
+    badge.style.display = "none";
+  }
+  document.getElementById("request-count-header").textContent = reqCount;
 }
 
 /* ================= 4. NAVIGATION ROUTER ================= */
@@ -193,6 +199,7 @@ document.querySelectorAll(".nav-item[data-view]").forEach((item) => {
     document.getElementById(viewId).classList.add("active");
 
     if (viewId === "profile-view") renderProfile();
+    if (viewId === "notifications-view") renderNotifications();
   });
 });
 
@@ -206,14 +213,12 @@ themeToggleBtn.addEventListener("click", () => {
     : `<i class="fa-solid fa-moon"></i> <span>Dark Mode</span>`;
 });
 
-/* ================= 6. STORIES (VIEW & POST) ================= */
+/* ================= 6. STORIES (VIEW & CREATE) ================= */
 let activeStoryIndex = 0;
 let storyTimer = null;
 
 function renderStories() {
   const container = document.getElementById("stories-container");
-  
-  // "Add Your Story" circular button
   let html = `
     <div class="story-item" onclick="openAddStoryModal()">
       <div class="story-avatar-wrapper user-add-wrapper">
@@ -224,7 +229,6 @@ function renderStories() {
     </div>
   `;
 
-  // Render Friend Stories
   html += state.stories
     .map(
       (story, index) => `
@@ -291,7 +295,7 @@ document.getElementById("close-story-btn").addEventListener("click", closeStory)
 document.getElementById("story-next-btn").addEventListener("click", nextStory);
 document.getElementById("story-prev-btn").addEventListener("click", prevStory);
 
-// Add Story Modal Logic
+// Story Upload Modal
 const addStoryModal = document.getElementById("add-story-modal");
 const addStoryForm = document.getElementById("add-story-form");
 let uploadedStorySrc = "";
@@ -338,7 +342,7 @@ addStoryForm.addEventListener("submit", (e) => {
   addStoryModal.classList.remove("active");
 });
 
-/* ================= 7. FEED POSTS & LIKED COMMENTS ================= */
+/* ================= 7. FEED POSTS & EDIT/DELETE ================= */
 function renderFeed() {
   const feed = document.getElementById("posts-feed");
   feed.innerHTML = state.posts
@@ -351,12 +355,28 @@ function renderFeed() {
             <img src="${post.avatar}" alt="${post.username}" class="post-avatar" />
             <strong>${post.username}</strong>
           </div>
-          <button><i class="fa-solid fa-ellipsis"></i></button>
+          
+          <div class="post-menu-container">
+            <button onclick="togglePostMenu(${post.id})"><i class="fa-solid fa-ellipsis"></i></button>
+            <div class="post-options-dropdown" id="dropdown-${post.id}">
+              ${
+                post.username === state.currentUser.username
+                  ? `
+                <button onclick="openEditPostModal(${post.id})"><i class="fa-solid fa-pen"></i> Edit</button>
+                <button class="delete-btn" onclick="deletePost(${post.id})"><i class="fa-solid fa-trash"></i> Delete</button>
+              `
+                  : `
+                <button onclick="alert('Post link copied!')"><i class="fa-regular fa-copy"></i> Copy Link</button>
+                <button onclick="alert('Post reported.')"><i class="fa-solid fa-flag"></i> Report</button>
+              `
+              }
+            </div>
+          </div>
         </header>
 
-        <!-- Media -->
+        <!-- Image -->
         <div class="post-image-container" ondblclick="toggleLike(${post.id})">
-          <img src="${post.image}" alt="Post image" />
+          <img src="${post.image}" alt="Post" />
         </div>
 
         <!-- Actions -->
@@ -378,7 +398,7 @@ function renderFeed() {
           <p class="post-likes"><span>${post.likes.toLocaleString()}</span> likes</p>
           <p class="post-caption"><strong>${post.username}</strong> ${post.caption}</p>
           
-          <!-- Comments List with Liked Comments -->
+          <!-- Liked Comments List -->
           <div class="post-comments-list">
             ${post.comments
               .map(
@@ -403,7 +423,6 @@ function renderFeed() {
 
           <p class="post-time">${post.timestamp}</p>
 
-          <!-- Add Comment -->
           <form class="post-add-comment" onsubmit="handleAddComment(event, ${post.id})">
             <input type="text" placeholder="Add a comment to Avengers log..." required />
             <button type="submit">Post</button>
@@ -414,6 +433,67 @@ function renderFeed() {
     )
     .join("");
 }
+
+// Toggle options dropdown on posts
+function togglePostMenu(postId) {
+  document.querySelectorAll(".post-options-dropdown").forEach((el) => {
+    if (el.id !== `dropdown-${postId}`) el.classList.remove("show");
+  });
+  const menu = document.getElementById(`dropdown-${postId}`);
+  if (menu) menu.classList.toggle("show");
+}
+
+window.addEventListener("click", (e) => {
+  if (!e.target.closest(".post-menu-container")) {
+    document.querySelectorAll(".post-options-dropdown").forEach((el) => el.classList.remove("show"));
+  }
+});
+
+// Edit Post Modal
+const editPostModal = document.getElementById("edit-post-modal");
+const editPostForm = document.getElementById("edit-post-form");
+
+function openEditPostModal(postId) {
+  const post = state.posts.find((p) => p.id === postId);
+  if (post) {
+    state.editingPostId = postId;
+    document.getElementById("edit-post-caption").value = post.caption;
+    editPostModal.classList.add("active");
+  }
+}
+document.getElementById("close-edit-post-btn").addEventListener("click", () => editPostModal.classList.remove("active"));
+
+editPostForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const post = state.posts.find((p) => p.id === state.editingPostId);
+  if (post) {
+    post.caption = document.getElementById("edit-post-caption").value.trim();
+    renderFeed();
+    editPostModal.classList.remove("active");
+  }
+});
+
+// Delete Post
+function deletePost(postId) {
+  if (confirm("Are you sure you want to delete this post?")) {
+    state.posts = state.posts.filter((p) => p.id !== postId);
+    renderFeed();
+    renderProfile();
+  }
+}
+
+// Refresh Feed Feature
+function refreshFeed() {
+  const refreshBtn = document.getElementById("refresh-feed-btn");
+  refreshBtn.innerHTML = `<i class="fa-solid fa-arrows-rotate fa-spin"></i> Refreshing...`;
+  setTimeout(() => {
+    renderFeed();
+    renderSuggestions();
+    refreshBtn.innerHTML = `<i class="fa-solid fa-arrows-rotate"></i> Refresh Feed`;
+  }, 400);
+}
+document.getElementById("refresh-feed-btn").addEventListener("click", refreshFeed);
+document.getElementById("sidebar-refresh-btn").addEventListener("click", refreshFeed);
 
 function toggleLike(postId) {
   const post = state.posts.find((p) => p.id === postId);
@@ -470,20 +550,22 @@ function deleteComment(postId, commentId) {
   }
 }
 
-/* ================= 8. FOLLOW / UNFOLLOW SYSTEM ================= */
-function toggleFollowUser(username) {
+/* ================= 8. FOLLOWERS SUGGESTED & FOLLOW SYSTEM ================= */
+function handleFollowAction(username) {
   const userKey = Object.keys(MARVEL_USERS).find((k) => MARVEL_USERS[k].username === username);
   if (!userKey) return;
+  const targetUser = MARVEL_USERS[userKey];
 
-  const user = MARVEL_USERS[userKey];
-  user.isFollowing = !user.isFollowing;
-
-  if (user.isFollowing) {
-    state.currentUser.following += 1;
-    user.followers += 1;
-  } else {
-    state.currentUser.following = Math.max(0, state.currentUser.following - 1);
-    user.followers = Math.max(0, user.followers - 1);
+  if (targetUser.status === "none") {
+    targetUser.status = "requested";
+  } else if (targetUser.status === "requested") {
+    // If clicked again, directly complete following
+    targetUser.status = "following";
+    state.currentUser.followingList.push(targetUser);
+  } else if (targetUser.status === "following") {
+    // Unfollow
+    targetUser.status = "none";
+    state.currentUser.followingList = state.currentUser.followingList.filter((u) => u.username !== targetUser.username);
   }
 
   syncCurrentUserUI();
@@ -493,11 +575,22 @@ function toggleFollowUser(username) {
 
 function renderSuggestions() {
   const container = document.getElementById("suggestions-list");
-  const suggestedKeys = ["natasha", "wanda", "strange", "bruce", "thor"];
+  const suggestedKeys = ["tony", "peter", "natasha", "wanda", "strange", "thor"];
 
   container.innerHTML = suggestedKeys
     .map((key) => {
       const user = MARVEL_USERS[key];
+      let btnLabel = "Follow";
+      let btnClass = "follow-toggle-btn";
+
+      if (user.status === "requested") {
+        btnLabel = "Requested";
+        btnClass += " requested";
+      } else if (user.status === "following") {
+        btnLabel = "Following";
+        btnClass += " following";
+      }
+
       return `
       <div class="suggestion-item">
         <div class="suggestion-user-info">
@@ -507,8 +600,8 @@ function renderSuggestions() {
             <p style="font-size:12px; color:gray">${user.name}</p>
           </div>
         </div>
-        <button class="follow-toggle-btn ${user.isFollowing ? "following" : ""}" onclick="toggleFollowUser('${user.username}')">
-          ${user.isFollowing ? "Following" : "Follow"}
+        <button class="${btnClass}" onclick="handleFollowAction('${user.username}')">
+          ${btnLabel}
         </button>
       </div>
     `;
@@ -516,7 +609,128 @@ function renderSuggestions() {
     .join("");
 }
 
-/* ================= 9. SEARCH WITH FOLLOW / UNFOLLOW ================= */
+/* ================= 9. NOTIFICATIONS & INCOMING REQUESTS ================= */
+function renderNotifications() {
+  const requestsList = document.getElementById("requests-list");
+  if (state.pendingFollowRequests.length === 0) {
+    requestsList.innerHTML = `<p style="color:gray; font-size:13px;">No pending follow requests.</p>`;
+  } else {
+    requestsList.innerHTML = state.pendingFollowRequests
+      .map(
+        (req) => `
+        <div class="request-item">
+          <div class="notification-user">
+            <img src="${req.user.avatar}" />
+            <div>
+              <strong>${req.user.username}</strong>
+              <p style="font-size:12px; color:gray">${req.user.name}</p>
+            </div>
+          </div>
+          <div class="request-item-buttons">
+            <button class="btn-confirm" onclick="acceptFollowRequest('${req.id}')">Confirm</button>
+            <button class="btn-delete" onclick="declineFollowRequest('${req.id}')">Delete</button>
+          </div>
+        </div>
+      `
+      )
+      .join("");
+  }
+
+  // Regular Notifications
+  const container = document.getElementById("notifications-list");
+  container.innerHTML = state.notifications
+    .map(
+      (n) => `
+      <div class="notification-item">
+        <div class="notification-user">
+          <img src="${n.avatar}" />
+          <p><strong>${n.username}</strong> ${n.text} <span style="color:gray; font-size:12px">${n.time}</span></p>
+        </div>
+      </div>
+    `
+    )
+    .join("");
+
+  syncCurrentUserUI();
+}
+
+function acceptFollowRequest(requestId) {
+  const req = state.pendingFollowRequests.find((r) => r.id === requestId);
+  if (req) {
+    state.currentUser.followersList.push(req.user);
+    state.pendingFollowRequests = state.pendingFollowRequests.filter((r) => r.id !== requestId);
+    state.notifications.unshift({
+      id: Date.now(),
+      username: req.user.username,
+      avatar: req.user.avatar,
+      text: "started following you.",
+      time: "Just now"
+    });
+    renderNotifications();
+    syncCurrentUserUI();
+  }
+}
+
+function declineFollowRequest(requestId) {
+  state.pendingFollowRequests = state.pendingFollowRequests.filter((r) => r.id !== requestId);
+  renderNotifications();
+  syncCurrentUserUI();
+}
+
+/* ================= 10. FOLLOWERS & FOLLOWING MODAL ================= */
+const usersModal = document.getElementById("users-list-modal");
+const usersModalTitle = document.getElementById("users-modal-title");
+const usersModalList = document.getElementById("users-modal-list");
+
+document.getElementById("stat-followers-btn").addEventListener("click", () => openUsersModal("Followers"));
+document.getElementById("stat-following-btn").addEventListener("click", () => openUsersModal("Following"));
+document.getElementById("close-users-modal-btn").addEventListener("click", () => usersModal.classList.remove("active"));
+
+function openUsersModal(type) {
+  usersModalTitle.textContent = type;
+  const list = type === "Followers" ? state.currentUser.followersList : state.currentUser.followingList;
+
+  if (list.length === 0) {
+    usersModalList.innerHTML = `<p style="text-align:center; color:gray; padding:20px;">No ${type.toLowerCase()} yet.</p>`;
+  } else {
+    usersModalList.innerHTML = list
+      .map(
+        (user) => `
+        <div class="user-list-item">
+          <div class="suggestion-user-info">
+            <img src="${user.avatar}" />
+            <div>
+              <strong>${user.username}</strong>
+              <p style="font-size:12px; color:gray">${user.name}</p>
+            </div>
+          </div>
+          <button class="btn-remove-user" onclick="${type === "Followers" ? `removeFollower('${user.username}')` : `unfollowUser('${user.username}')`}">
+            ${type === "Followers" ? "Remove" : "Unfollow"}
+          </button>
+        </div>
+      `
+      )
+      .join("");
+  }
+  usersModal.classList.add("active");
+}
+
+function removeFollower(username) {
+  state.currentUser.followersList = state.currentUser.followersList.filter((u) => u.username !== username);
+  openUsersModal("Followers");
+  syncCurrentUserUI();
+}
+
+function unfollowUser(username) {
+  state.currentUser.followingList = state.currentUser.followingList.filter((u) => u.username !== username);
+  const userKey = Object.keys(MARVEL_USERS).find((k) => MARVEL_USERS[k].username === username);
+  if (userKey) MARVEL_USERS[userKey].status = "none";
+  openUsersModal("Following");
+  renderSuggestions();
+  syncCurrentUserUI();
+}
+
+/* ================= 11. SEARCH ================= */
 const searchInput = document.getElementById("search-input");
 const searchResults = document.getElementById("search-results");
 
@@ -529,8 +743,19 @@ function renderSearch(query = "") {
     : allUsers;
 
   searchResults.innerHTML = filtered
-    .map(
-      (user) => `
+    .map((user) => {
+      let btnLabel = "Follow";
+      let btnClass = "follow-toggle-btn";
+
+      if (user.status === "requested") {
+        btnLabel = "Requested";
+        btnClass += " requested";
+      } else if (user.status === "following") {
+        btnLabel = "Following";
+        btnClass += " following";
+      }
+
+      return `
       <div class="suggestion-item">
         <div class="suggestion-user-info">
           <img src="${user.avatar}" />
@@ -539,17 +764,17 @@ function renderSearch(query = "") {
             <p style="font-size:12px; color:gray">${user.name} • ${user.followers.toLocaleString()} followers</p>
           </div>
         </div>
-        <button class="follow-toggle-btn ${user.isFollowing ? "following" : ""}" onclick="toggleFollowUser('${user.username}')">
-          ${user.isFollowing ? "Following" : "Follow"}
+        <button class="${btnClass}" onclick="handleFollowAction('${user.username}')">
+          ${btnLabel}
         </button>
       </div>
-    `
-    )
+    `;
+    })
     .join("");
 }
 searchInput.addEventListener("input", (e) => renderSearch(e.target.value));
 
-/* ================= 10. PROFILE TABS & EDIT PROFILE ================= */
+/* ================= 12. PROFILE & EDIT PROFILE ================= */
 function switchProfileTab(tab) {
   state.activeProfileTab = tab;
   document.getElementById("tab-posts-btn").classList.toggle("active", tab === "posts");
@@ -580,7 +805,6 @@ function renderProfile() {
       )
       .join("");
   } else {
-    // Saved Tab
     if (savedPosts.length === 0) {
       grid.innerHTML = `<div class="empty-grid-msg"><i class="fa-regular fa-bookmark fa-2x"></i><br/>No Saved Posts Yet</div>`;
       return;
@@ -640,7 +864,6 @@ editProfileForm.addEventListener("submit", (e) => {
   state.currentUser.website = document.getElementById("edit-website-input").value.trim();
   state.currentUser.avatar = editAvatarSrc || state.currentUser.avatar;
 
-  // Update existing user posts with new username and avatar
   state.posts.forEach((p) => {
     if (p.username === oldUsername) {
       p.username = newUsername;
@@ -655,7 +878,7 @@ editProfileForm.addEventListener("submit", (e) => {
   editProfileModal.classList.remove("active");
 });
 
-/* ================= 11. CREATE POST MODAL ================= */
+/* ================= 13. CREATE POST ================= */
 const createModal = document.getElementById("create-modal");
 const openCreateBtn = document.getElementById("open-create-btn");
 const closeCreateBtn = document.getElementById("close-create-btn");
@@ -709,23 +932,7 @@ createPostForm.addEventListener("submit", (e) => {
   createModal.classList.remove("active");
 });
 
-/* ================= 12. NOTIFICATIONS & MESSAGES ================= */
-function renderNotifications() {
-  const container = document.getElementById("notifications-list");
-  container.innerHTML = state.notifications
-    .map(
-      (n) => `
-      <div class="notification-item">
-        <div class="notification-user">
-          <img src="${n.avatar}" />
-          <p><strong>${n.username}</strong> ${n.text} <span style="color:gray; font-size:12px">${n.time}</span></p>
-        </div>
-      </div>
-    `
-    )
-    .join("");
-}
-
+/* ================= 14. MESSAGES / DIRECT COMMS ================= */
 function renderChatSidebar() {
   const list = document.getElementById("chat-user-list");
   list.innerHTML = Object.keys(state.messages)
@@ -781,10 +988,8 @@ document.getElementById("chat-form").addEventListener("submit", (e) => {
     renderChatMessages();
 
     setTimeout(() => {
-      let replyText = "Understood. Avengers standby.";
-      if (state.activeChatUser === "tony_stark") replyText = "JARVIS, run telemetry on Tulasi's coordinates.";
-      if (state.activeChatUser === "dr_strange") replyText = "The astral plane confirms our next move. Proceed.";
-      if (state.activeChatUser === "wanda_maximoff") replyText = "I've got the perimeter covered with chaos hexes.";
+      let replyText = "Avengers comms received. Standby.";
+      if (state.activeChatUser === "tony_stark") replyText = "Running telemetry on your coordinates now, Tulasi.";
       if (state.activeChatUser === "peter_parker") replyText = "On my way Mr. Polireddy! Web shooters reloaded!";
 
       state.messages[state.activeChatUser].push({
@@ -796,7 +1001,7 @@ document.getElementById("chat-form").addEventListener("submit", (e) => {
   }
 });
 
-/* ================= 13. INITIALIZE APP ================= */
+/* ================= 15. INITIALIZE ================= */
 function init() {
   syncCurrentUserUI();
   renderStories();
